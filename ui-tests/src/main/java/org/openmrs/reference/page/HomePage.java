@@ -122,7 +122,10 @@ public class HomePage extends Page {
     	clickOn(FIND_PATIENT_RECORD);
     	return new FindPatientPage(driver);
     }
-    public void goToDataMagament(){ clickOn(DATA_MANAGAMENT);}
+    public DataManagementPage goToDataMagament(){
+        clickOn(DATA_MANAGAMENT);
+        return new DataManagementPage(this);
+    }
 
 
     @Override

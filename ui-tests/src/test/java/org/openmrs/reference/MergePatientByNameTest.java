@@ -1,3 +1,12 @@
+/**
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
+ * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
+ *
+ * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
+ * graphic logo is a trademark of OpenMRS Inc.
+ */
 package org.openmrs.reference;
 
 import org.junit.Before;
@@ -6,91 +15,41 @@ import org.openmrs.reference.helper.TestPatient;
 import org.openmrs.reference.page.*;
 import org.openmrs.uitestframework.test.TestBase;
 import org.junit.*;
+import org.openmrs.uitestframework.test.TestData;
+
 import static org.junit.Assert.assertTrue;
 
 
 /**
- * Created by nata on 09.07.15.
  */
 
-public class MergePatientByNameTest extends TestBase {
-    private HomePage homePage;
-    private HeaderPage headerPage;
-    private FindPatientPage findPatientPage;
-    private TestPatient patient;
-    private TestPatient patient1;
-    private RegistrationPage registrationPage;
-    private ClinicianFacingPatientDashboardPage patientDashboardPage;
-    private DataManagementPage dataManagementPage;
-    private String id;
-    private String id2;
+public class MergePatientByNameTest extends ReferenceApplicationTestBase {
 
+    private TestData.PatientInfo testPatient1;
+    private TestData.PatientInfo testPatient2;
 
     @Before
     public void setUp() throws Exception {
-        
-        homePage = new HomePage(page);
-        assertPage(homePage);
-        headerPage = new HeaderPage(driver);
-        findPatientPage = new FindPatientPage(driver);
-        registrationPage = new RegistrationPage(page);
-        patientDashboardPage = new ClinicianFacingPatientDashboardPage(page);
-        dataManagementPage = new DataManagementPage(driver);
-        patient = new TestPatient();
-        patient1 = new TestPatient();
-
-
+        testPatient1 = createTestPatient();
+        testPatient2 = createTestPatient();
     }
 
     @Test
     public void mergePatientByNameTest() throws Exception {
-        homePage.goToRegisterPatientApp();
-//       Register first patient
-        patient.familyName = "Mike";
-        patient.givenName = "Smith";
-        patient.gender = "Male";
-        patient.estimatedYears = "25";
-        patient.address1 = "address";
-        registrationPage.enterMegrePatient(patient);
-        id = patientDashboardPage.findPatientId();
-        patient.uuid =  patientDashboardPage.getPatientUuidFromUrl();
-        headerPage.clickOnHomeIcon();
-//     Register second patient
-        homePage.goToRegisterPatientApp();
-        patient1.familyName = "Mike";
-        patient1.givenName = "Kowalski";
-        patient1.gender = "Male";
-        patient1.estimatedYears = "25";
-        patient1.address1 = "address";
-        registrationPage.enterMegrePatient(patient1);
-        id2 = patientDashboardPage.findPatientId();
-        patient.uuid =  patientDashboardPage.getPatientUuidFromUrl();
-        headerPage.clickOnHomeIcon();
-        homePage.goToDataMagament();
-        dataManagementPage.goToMegrePatient();
-        dataManagementPage.enterPatient1(id);
-        dataManagementPage.enterPatient2(id2);
-        dataManagementPage.searchId(id);
-        dataManagementPage.clickOnContinue();
-        dataManagementPage.clickOnMergePatient();
-        dataManagementPage.clickOnContinue();
-        headerPage.clickOnHomeLink();
-        assertTrue(patientDashboardPage.visitLink().getText().contains("Records merged! Viewing preferred patient."));
-        homePage.clickOnFindPatientRecord();
-        findPatientPage.enterPatient(patient.givenName);
-        assertTrue(driver.getPageSource().contains(patient1.givenName));
-        findPatientPage.enterPatient(patient1.givenName);
-        assertTrue(driver.getPageSource().contains(patient.givenName));
+        DataManagementPage dataManagementPage = homePage.goToDataMagament();
+        MergePatientsPage mergePatientsPage = dataManagementPage.goToMegrePatient();
+        mergePatientsPage.setPatient1(testPatient1.id);
+        mergePatientsPage.setPatient2(testPatient2.id);
+        mergePatientsPage.clickOnContinue();
+        mergePatientsPage.clickOnMergePatient();
     }
 
 
 
     @After
     public void tearDown() throws Exception {
-        headerPage.clickOnHomeIcon();
-        deletePatient(patient.uuid);
-        waitForPatientDeletion(patient.uuid);
-        headerPage.logOut();
+        deletePatient(testPatient1.uuid);
+        deletePatient(testPatient2.uuid);
     }
 
 }
