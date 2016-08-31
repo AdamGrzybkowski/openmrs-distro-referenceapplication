@@ -22,6 +22,7 @@ import org.openmrs.uitestframework.test.TestData;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.empty;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 public class XSSOnPhoneNumberFieldTest extends ReferenceApplicationTestBase {
@@ -54,6 +55,7 @@ public class XSSOnPhoneNumberFieldTest extends ReferenceApplicationTestBase {
         registrationEditSectionPage.enterPhoneNumber("111111111");
         registrationEditSectionPage.clickOnConfirmEdit();
         patientDashboardPage = registrationEditSectionPage.confirmPatient();
+        assertNotNull(null);
         //Ignored as show contact may hide under success message
         //patientDashboardPage.clickOnShowContact();
         //assertThat(patientDashboardPage.getTelephoneNumber(), is("111111111"));
