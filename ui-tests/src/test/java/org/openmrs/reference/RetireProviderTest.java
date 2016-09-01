@@ -38,7 +38,6 @@ public class RetireProviderTest extends ReferenceApplicationTestBase{
     }
 
     @Test
-    @Ignore("RA-1200")
     @Category(BuildTests.class)
     public void retireProviderTest() throws InterruptedException {
         AdministrationPage administrationPage = homePage.goToAdministration();

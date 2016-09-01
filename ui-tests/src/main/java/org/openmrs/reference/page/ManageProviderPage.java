@@ -20,7 +20,7 @@ public class ManageProviderPage extends Page {
 	private static final By INCLUDE_RETIRED = By.id("includeVoided");
 	private static final By ADD_PROVIDER = By.cssSelector("#content a[href='provider.form']");
 	//selecting the second column as the first column may match loading or no results
-	private static final By FIRST_PROVIDER = By.cssSelector("#openmrsSearchTable tr:first-child td:nth-child(2)");
+	private static final By FIRST_PROVIDER = By.cssSelector("#openmrsSearchTable tbody tr:first-child td:nth-child(2)");
 	private static final By OPENMRS_MSG = By.id("openmrs_msg");
 
 	public ManageProviderPage(Page parent) {

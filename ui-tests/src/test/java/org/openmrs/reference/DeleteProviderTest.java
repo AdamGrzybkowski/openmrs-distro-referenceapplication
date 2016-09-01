@@ -38,9 +38,8 @@ public class DeleteProviderTest extends ReferenceApplicationTestBase{
     }
 
     @Test
-    @Ignore("RA-1200")
     @Category(BuildTests.class)
-    public void retireProviderTest() throws InterruptedException {
+    public void deleteProviderTest() throws InterruptedException {
         AdministrationPage administrationPage = homePage.goToAdministration();
         ManageProviderPage manageProviderPage = administrationPage.clickOnManageProviders();
         manageProviderPage.setProviderNameOrId(person.getName());
